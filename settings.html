@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ky-summarizer — Settings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg-primary: #0d0d1a;
+      --bg-secondary: #13131f;
+      --bg-card: #1a1a2e;
+      --bg-hover: #1e1e35;
+      --border: rgba(124, 58, 237, 0.25);
+      --border-subtle: rgba(255, 255, 255, 0.07);
+      --purple: #7c3aed;
+      --purple-light: #9d5cf6;
+      --blue: #3b82f6;
+      --green: #10b981;
+      --red: #ef4444;
+      --amber: #f59e0b;
+      --text-primary: #f0f0ff;
+      --text-secondary: #8888aa;
+      --text-muted: #55557a;
+      --gradient: linear-gradient(135deg, #7c3aed, #3b82f6);
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 580px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 28px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .header-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 0 16px rgba(124,58,237,0.4);
+      flex-shrink: 0;
+    }
+
+    .header-info h1 {
+      font-size: 18px;
+      font-weight: 700;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header-info p {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .content {
+      flex: 1;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .section {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-subtle);
+    }
+
+    #provider-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .provider-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .provider-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gradient);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .provider-card:hover {
+      border-color: rgba(124, 58, 237, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(124,58,237,0.15);
+    }
+
+    .provider-card.selected {
+      border-color: var(--purple);
+      background: rgba(124, 58, 237, 0.1);
+      box-shadow: 0 0 0 1px var(--purple), 0 4px 20px rgba(124,58,237,0.2);
+    }
+
+    .provider-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .provider-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .provider-badge {
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 20px;
+      white-space: nowrap;
+      letter-spacing: 0.3px;
+    }
+
+    .provider-model {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .provider-note {
+      font-size: 11px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .api-key-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 18px;
+    }
+
+    .model-info-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .model-info-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    #model-info {
+      font-size: 12px;
+      color: var(--purple-light);
+      font-weight: 500;
+    }
+
+    .input-wrapper {
+      display: flex;
+      gap: 8px;
+    }
+
+    .api-key-input {
+      flex: 1;
+      background: var(--bg-secondary);
+      border: 1.5px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 11px 14px;
+      color: var(--text-primary);
+      font-family: 'Inter', monospace;
+      font-size: 13px;
+      transition: all 0.2s;
+      outline: none;
+    }
+
+    .api-key-input:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+    }
+
+    .api-key-input::placeholder {
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .input-icon-btn {
+      background: var(--bg-secondary);
+      border: 1.5px solid var(--border-subtle);
+      border-radius: 10px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .input-icon-btn:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+      border-color: var(--border);
+    }
+
+    .get-key-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--purple-light);
+      text-decoration: none;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+
+    .get-key-link:hover {
+      opacity: 1;
+    }
+
+    .privacy-box {
+      background: rgba(16, 185, 129, 0.05);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .privacy-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .privacy-text {
+      font-size: 12px;
+      color: rgba(16, 185, 129, 0.9);
+      line-height: 1.6;
+    }
+
+    .privacy-text strong {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 13px;
+    }
+
+    .save-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--gradient);
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      letter-spacing: 0.3px;
+      box-shadow: 0 4px 20px rgba(124,58,237,0.35);
+    }
+
+    .save-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(124,58,237,0.45);
+    }
+
+    .save-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .status-message {
+      font-size: 13px;
+      text-align: center;
+      padding: 10px 16px;
+      border-radius: 10px;
+      opacity: 0;
+      transform: translateY(-5px);
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+
+    .status-message.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .status-success {
+      background: rgba(16,185,129,0.1);
+      color: var(--green);
+      border: 1px solid rgba(16,185,129,0.3);
+    }
+
+    .status-error {
+      background: rgba(239,68,68,0.1);
+      color: var(--red);
+      border: 1px solid rgba(239,68,68,0.3);
+    }
+
+    .status-warning {
+      background: rgba(245,158,11,0.1);
+      color: var(--amber);
+      border: 1px solid rgba(245,158,11,0.3);
+    }
+
+    .footer {
+      padding: 16px 28px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-text {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div class="header-logo">🧠</div>
+    <div class="header-info">
+      <h1>ky-summarizer</h1>
+      <p>AI Provider & API Key Configuration</p>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="section">
+      <div class="section-label">🤖 Select AI Provider</div>
+      <div id="provider-cards"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">🔑 API Key</div>
+      <div class="api-key-section">
+        <div class="model-info-row">
+          <span class="model-info-label">Model in use:</span>
+          <span id="model-info">—</span>
+        </div>
+        <div class="input-wrapper">
+          <input
+            type="password"
+            id="api-key-input"
+            class="api-key-input"
+            placeholder="Enter API Key..."
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <button class="input-icon-btn" id="toggle-visibility-btn" title="Toggle visibility">👁️</button>
+          <button class="input-icon-btn" id="clear-key-btn" title="Clear">✕</button>
+        </div>
+        <a href="#" id="get-key-link" class="get-key-link" target="_blank">
+          🔗 Get free API Key →
+        </a>
+      </div>
+    </div>
+
+    <div class="privacy-box">
+      <span class="privacy-icon">🔐</span>
+      <div class="privacy-text">
+        <strong>100% Private & Secure</strong>
+        API keys are stored locally in your browser (<code>chrome.storage.local</code>) and are never sent to any server other than your selected AI provider. Developers do not have access to your keys or chat history.
+      </div>
+    </div>
+
+    <div class="status-message" id="status-message"></div>
+
+    <button class="save-btn" id="save-btn">💾 Save Settings</button>
+  </div>
+
+  <div class="footer">
+    <span class="footer-text">ky-summarizer v1.0 — Open Source</span>
+    <span class="footer-text">Zero server · Zero tracking</span>
+  </div>
+</div>
+<script src="settings.js"></script>
+</body>
+</html>

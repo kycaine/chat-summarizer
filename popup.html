@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ky-summarizer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #111118;
+      --bg-card: #1c1c28;
+      --border: rgba(255,255,255,0.08);
+      --purple: #7c3aed;
+      --purple-dim: rgba(124,58,237,0.15);
+      --green: #10b981;
+      --red: #ef4444;
+      --amber: #f59e0b;
+      --text: #e8e8f0;
+      --text-dim: #6b6b8a;
+      --text-mid: #9898b8;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      width: 300px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-mid);
+      letter-spacing: 0.2px;
+    }
+
+    .provider-pill {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 2px 9px;
+      border-radius: 20px;
+      background: var(--purple-dim);
+      color: #a78bfa;
+      border: 1px solid rgba(124,58,237,0.3);
+    }
+
+    .provider-pill.no-key {
+      background: rgba(245,158,11,0.1);
+      color: var(--amber);
+      border-color: rgba(245,158,11,0.3);
+    }
+
+    .guide {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .guide[hidden] { display: none; }
+
+    .guide-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .guide-steps {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .guide-steps li {
+      font-size: 11px;
+      color: var(--text-mid);
+      display: flex;
+      align-items: baseline;
+      gap: 7px;
+      line-height: 1.5;
+    }
+
+    .step-num {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--purple);
+      background: var(--purple-dim);
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .progress-bar {
+      height: 2px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+      display: none;
+    }
+
+    .progress-bar.visible { display: block; }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--purple), #3b82f6);
+      border-radius: 2px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    .status {
+      font-size: 11px;
+      color: var(--text-dim);
+      text-align: center;
+      min-height: 14px;
+      transition: color 0.2s;
+    }
+
+    .status.ok  { color: var(--green); }
+    .status.err { color: var(--red); }
+
+    .btn-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      flex: 1;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 10px 0;
+      transition: all 0.2s ease;
+    }
+
+    .btn-settings {
+      background: var(--bg-card);
+      color: var(--text-mid);
+      border: 1px solid var(--border);
+      flex: 0 0 auto;
+      width: 80px;
+    }
+
+    .btn-settings:hover {
+      background: #24243a;
+      color: var(--text);
+    }
+
+    .btn-main {
+      background: linear-gradient(135deg, #7c3aed, #3b82f6);
+      color: #fff;
+      box-shadow: 0 2px 12px rgba(124,58,237,0.3);
+    }
+
+    .btn-main:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 18px rgba(124,58,237,0.4);
+    }
+
+    .btn-main:active:not(:disabled) { transform: none; }
+
+    .btn-main:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    .btn-main.done {
+      background: linear-gradient(135deg, #059669, #10b981);
+      box-shadow: 0 2px 12px rgba(16,185,129,0.3);
+    }
+
+    .btn-main.err {
+      background: linear-gradient(135deg, #dc2626, #ef4444);
+      box-shadow: 0 2px 12px rgba(239,68,68,0.3);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <span class="brand">ky-summarizer</span>
+    <span class="provider-pill no-key" id="provider-pill">Loading...</span>
+  </div>
+
+  <div class="guide" id="guide">
+    <div class="guide-title">How to get started:</div>
+    <ol class="guide-steps">
+      <li><span class="step-num">1</span>Click <strong>Settings</strong> below</li>
+      <li><span class="step-num">2</span>Select a provider (Groq is free)</li>
+      <li><span class="step-num">3</span>Paste your API key and Save</li>
+      <li><span class="step-num">4</span>Return to chat, click <strong>Summarize Now</strong></li>
+    </ol>
+  </div>
+
+  <div class="progress-bar" id="progress-bar">
+    <div class="progress-fill" id="progress-fill"></div>
+  </div>
+
+  <div class="status" id="status"></div>
+
+  <div class="btn-row">
+    <button class="btn btn-settings" id="settings-btn">Settings</button>
+    <button class="btn btn-main" id="summarize-btn">Summarize Now</button>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,23 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ky-summarizer — Settings</title>
+  <title>chat-summarizer — Settings</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     :root {
       --bg-primary: #0d0d1a;
       --bg-secondary: #13131f;
       --bg-card: #1a1a2e;
       --bg-hover: #1e1e35;
-      --border: rgba(124, 58, 237, 0.25);
+      --border: rgba(13, 185, 166, 0.25);
       --border-subtle: rgba(255, 255, 255, 0.07);
-      --purple: #7c3aed;
-      --purple-light: #9d5cf6;
+      --purple: #0db9a6;
+      --purple-light: #2dd4bf;
       --blue: #3b82f6;
       --green: #10b981;
       --red: #ef4444;
@@ -25,7 +30,7 @@
       --text-primary: #f0f0ff;
       --text-secondary: #8888aa;
       --text-muted: #55557a;
-      --gradient: linear-gradient(135deg, #7c3aed, #3b82f6);
+      --gradient: linear-gradient(135deg, #0db9a6, #06b6d4);
     }
 
     body {
@@ -67,7 +72,7 @@
       align-items: center;
       justify-content: center;
       font-size: 20px;
-      box-shadow: 0 0 16px rgba(124,58,237,0.4);
+      box-shadow: 0 0 16px rgba(13, 185, 166, 0.4);
       flex-shrink: 0;
     }
 
@@ -145,15 +150,15 @@
     }
 
     .provider-card:hover {
-      border-color: rgba(124, 58, 237, 0.4);
+      border-color: rgba(13, 185, 166, 0.4);
       transform: translateY(-2px);
-      box-shadow: 0 4px 16px rgba(124,58,237,0.15);
+      box-shadow: 0 4px 16px rgba(13, 185, 166, 0.15);
     }
 
     .provider-card.selected {
       border-color: var(--purple);
-      background: rgba(124, 58, 237, 0.1);
-      box-shadow: 0 0 0 1px var(--purple), 0 4px 20px rgba(124,58,237,0.2);
+      background: rgba(13, 185, 166, 0.1);
+      box-shadow: 0 0 0 1px var(--purple), 0 4px 20px rgba(13, 185, 166, 0.2);
     }
 
     .provider-card-header {
@@ -236,7 +241,7 @@
 
     .api-key-input:focus {
       border-color: var(--purple);
-      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+      box-shadow: 0 0 0 3px rgba(13, 185, 166, 0.15);
     }
 
     .api-key-input::placeholder {
@@ -321,12 +326,12 @@
       cursor: pointer;
       transition: all 0.3s ease;
       letter-spacing: 0.3px;
-      box-shadow: 0 4px 20px rgba(124,58,237,0.35);
+      box-shadow: 0 4px 20px rgba(13, 185, 166, 0.35);
     }
 
     .save-btn:hover:not(:disabled) {
       transform: translateY(-2px);
-      box-shadow: 0 8px 28px rgba(124,58,237,0.45);
+      box-shadow: 0 8px 28px rgba(13, 185, 166, 0.45);
     }
 
     .save-btn:disabled {
@@ -351,21 +356,21 @@
     }
 
     .status-success {
-      background: rgba(16,185,129,0.1);
+      background: rgba(16, 185, 129, 0.1);
       color: var(--green);
-      border: 1px solid rgba(16,185,129,0.3);
+      border: 1px solid rgba(16, 185, 129, 0.3);
     }
 
     .status-error {
-      background: rgba(239,68,68,0.1);
+      background: rgba(239, 68, 68, 0.1);
       color: var(--red);
-      border: 1px solid rgba(239,68,68,0.3);
+      border: 1px solid rgba(239, 68, 68, 0.3);
     }
 
     .status-warning {
-      background: rgba(245,158,11,0.1);
+      background: rgba(245, 158, 11, 0.1);
       color: var(--amber);
-      border: 1px solid rgba(245,158,11,0.3);
+      border: 1px solid rgba(245, 158, 11, 0.3);
     }
 
     .footer {
@@ -381,70 +386,76 @@
       color: var(--text-muted);
     }
 
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 2px;
+    }
   </style>
 </head>
+
 <body>
-<div class="page">
-  <div class="header">
-    <div class="header-logo">🧠</div>
-    <div class="header-info">
-      <h1>ky-summarizer</h1>
-      <p>AI Provider & API Key Configuration</p>
-    </div>
-  </div>
-
-  <div class="content">
-    <div class="section">
-      <div class="section-label">🤖 Select AI Provider</div>
-      <div id="provider-cards"></div>
-    </div>
-
-    <div class="section">
-      <div class="section-label">🔑 API Key</div>
-      <div class="api-key-section">
-        <div class="model-info-row">
-          <span class="model-info-label">Model in use:</span>
-          <span id="model-info">—</span>
-        </div>
-        <div class="input-wrapper">
-          <input
-            type="password"
-            id="api-key-input"
-            class="api-key-input"
-            placeholder="Enter API Key..."
-            autocomplete="off"
-            spellcheck="false"
-          />
-          <button class="input-icon-btn" id="toggle-visibility-btn" title="Toggle visibility">👁️</button>
-          <button class="input-icon-btn" id="clear-key-btn" title="Clear">✕</button>
-        </div>
-        <a href="#" id="get-key-link" class="get-key-link" target="_blank">
-          🔗 Get free API Key →
-        </a>
+  <div class="page">
+    <div class="header">
+      <div class="header-logo">🧠</div>
+      <div class="header-info">
+        <h1>chat summarizer</h1>
+        <p>by ky · AI Provider & API Key Configuration</p>
       </div>
     </div>
 
-    <div class="privacy-box">
-      <span class="privacy-icon">🔐</span>
-      <div class="privacy-text">
-        <strong>100% Private & Secure</strong>
-        API keys are stored locally in your browser (<code>chrome.storage.local</code>) and are never sent to any server other than your selected AI provider. Developers do not have access to your keys or chat history.
+    <div class="content">
+      <div class="section">
+        <div class="section-label">🤖 Select AI Provider</div>
+        <div id="provider-cards"></div>
       </div>
+
+      <div class="section">
+        <div class="section-label">🔑 API Key</div>
+        <div class="api-key-section">
+          <div class="model-info-row">
+            <span class="model-info-label">Model in use:</span>
+            <span id="model-info">—</span>
+          </div>
+          <div class="input-wrapper">
+            <input type="password" id="api-key-input" class="api-key-input" placeholder="Enter API Key..."
+              autocomplete="off" spellcheck="false" />
+            <button class="input-icon-btn" id="toggle-visibility-btn" title="Toggle visibility">👁️</button>
+            <button class="input-icon-btn" id="clear-key-btn" title="Clear">✕</button>
+          </div>
+          <a href="#" id="get-key-link" class="get-key-link" target="_blank">
+            🔗 Get free API Key →
+          </a>
+        </div>
+      </div>
+
+      <div class="privacy-box">
+        <span class="privacy-icon">🔐</span>
+        <div class="privacy-text">
+          <strong>100% Private & Secure</strong>
+          API keys are stored locally in your browser (<code>chrome.storage.local</code>) and are never sent to any
+          server other than your selected AI provider. Developers do not have access to your keys or chat history.
+        </div>
+      </div>
+
+      <div class="status-message" id="status-message"></div>
+
+      <button class="save-btn" id="save-btn">💾 Save Settings</button>
     </div>
 
-    <div class="status-message" id="status-message"></div>
-
-    <button class="save-btn" id="save-btn">💾 Save Settings</button>
+    <div class="footer">
+      <span class="footer-text">chat-summarizer v1.0 — Open Source</span>
+      <span class="footer-text">Zero server · Zero tracking</span>
+    </div>
   </div>
-
-  <div class="footer">
-    <span class="footer-text">ky-summarizer v1.0 — Open Source</span>
-    <span class="footer-text">Zero server · Zero tracking</span>
-  </div>
-</div>
-<script src="settings.js"></script>
+  <script src="settings.js"></script>
 </body>
+
 </html>

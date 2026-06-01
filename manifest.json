@@ -1,12 +1,15 @@
 {
   "manifest_version": 3,
-  "name": "ky-summarizer",
+  "name": "chat-summarizer",
   "version": "1.0.0",
   "description": "Summarize your AI chat into a structured .md file with 1 click. Never lose context again.",
   "icons": {
     "16": "icon16.png",
     "48": "icon48.png",
     "128": "icon128.png"
+  },
+  "background": {
+    "service_worker": "background.js"
   },
   "action": {
     "default_popup": "popup.html",
@@ -15,7 +18,7 @@
       "48": "icon48.png",
       "128": "icon128.png"
     },
-    "default_title": "ky-summarizer"
+    "default_title": "chat-summarizer"
   },
   "permissions": [
     "activeTab",
